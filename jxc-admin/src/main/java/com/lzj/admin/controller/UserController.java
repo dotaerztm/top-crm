@@ -3,9 +3,8 @@ package com.lzj.admin.controller;
 
 import com.lzj.admin.exceptions.ParamsException;
 import com.lzj.admin.model.RespBean;
-import com.lzj.admin.pojo.User;
+import com.lzj.admin.entity.User;
 import com.lzj.admin.service.IUserService;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -65,6 +64,17 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         session.setAttribute("user",userService.getById(user.getId()));
         return "user/setting";
+    }
+
+    /**
+     * 用户列表
+     * @return
+     */
+    @RequestMapping("userList")
+    public String userList(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        session.setAttribute("user",userService.getById(user.getId()));
+        return "user/user";
     }
 
 

@@ -1,7 +1,7 @@
 package com.lzj.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lzj.admin.pojo.User;
+import com.lzj.admin.entity.User;
 import com.lzj.admin.mapper.UserMapper;
 import com.lzj.admin.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

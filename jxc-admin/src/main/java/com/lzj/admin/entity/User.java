@@ -1,4 +1,4 @@
-package com.lzj.admin.pojo;
+package com.lzj.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;

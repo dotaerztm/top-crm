@@ -34,7 +34,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-block">
-                    <input type="text" name="remarks"  placeholder="请输入备注信息"  value="${(user.bz)!}" class="layui-input">
+                    <input type="text" name="remarks"  placeholder="请输入备注信息"  value="${(user.remarks)!}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.admin.mapper.TextMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lzj.admin.entity.Text">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="text_type" property="textType" />
+        <result column="remarks" property="remarks" />
+        <result column="text_name" property="textName" />
+        <result column="link" property="link" />
+        <result column="text_group" property="textGroup" />
+        <result column="text_time" property="textTime" />
+        <result column="sort" property="sort" />
+        <result column="is_del" property="isDel" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="author" property="author" />
+        <result column="class_time_content" property="classTimeContent" />
+        <result column="assignment_middle" property="assignmentMiddle" />
+        <result column="assignment_content" property="assignmentContent" />
+        <result column="assignment_link" property="assignmentLink" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, content, text_type, remarks, is_del,text_name,link,text_group,text_time,sort,insert_time,update_time,author,
+            classTimeContent,assignmentMiddle,assignmentContent,assignmentLink
+    </sql>
+
+</mapper>

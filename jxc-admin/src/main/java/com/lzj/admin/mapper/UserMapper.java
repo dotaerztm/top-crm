@@ -1,6 +1,6 @@
 package com.lzj.admin.mapper;
 
-import com.lzj.admin.pojo.User;
+import com.lzj.admin.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

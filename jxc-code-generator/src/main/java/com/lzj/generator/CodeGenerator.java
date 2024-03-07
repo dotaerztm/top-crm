@@ -47,9 +47,10 @@ public class CodeGenerator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/jxc-admin/src/main/java");
+        //gc.setOutputDir(projectPath + "/jxc-admin/src/main/java");
+        gc.setOutputDir(projectPath + "/进销存项目-免费/002_code/jxc-manager-par/jxc-admin/src/main/java");
         //作者
-        gc.setAuthor("老李");
+        gc.setAuthor("ch_ztm");
         //打开输出目录
         gc.setOpen(false);
         //xml开启 BaseResultMap
@@ -63,21 +64,20 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/lzj_jxc?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia" +
-                "/Shanghai");
+        dsc.setUrl("jdbc:mysql://47.103.27.218:3306/shiqi_top?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setUsername("shiqi_top");
+        dsc.setPassword("w7xEQ55YQy");
         mpg.setDataSource(dsc);
 
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.lzj.admin")
-                .setEntity("pojo")
+                .setEntity("entity")
                 .setMapper("mapper")
                 .setService("service")
-                .setServiceImpl("service.impl")
-                .setController("controller");
+                .setServiceImpl("service.impl");
+                //.setController("controller");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -100,7 +100,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/jxc-admin/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper"
+                return projectPath + "/进销存项目-免费/002_code/jxc-manager-par/jxc-admin/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper"
                         + StringPool.DOT_XML;
             }
         });
@@ -123,7 +123,7 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         //生成 @Controller 控制器
         strategy.setRestControllerStyle(false);
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        strategy.setInclude(scanner("输入表名").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         //表前缀
         strategy.setTablePrefix("t_");

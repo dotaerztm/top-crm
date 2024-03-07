@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * 公共返回对象
  *
@@ -20,7 +25,8 @@ public class RespBean {
 	@ApiModelProperty(value = "响应消息")
 	private String message;
 	@ApiModelProperty(value = "响应结果信息")
-	private Object obj;
+	private Map<String, Object> data;
+
 
 	/**
 	 * 成功返回结果
@@ -28,17 +34,17 @@ public class RespBean {
 	 * @return
 	 */
 	public static RespBean success(String message){
-		return new RespBean(200,message,null);
+		return new RespBean(200,message, null);
 	}
 
 	/**
 	 * 成功返回结果
 	 * @param message
-	 * @param obj
+	 * @param data
 	 * @return
 	 */
-	public static RespBean success(String message,Object obj){
-		return new RespBean(200,message,obj);
+	public static RespBean success(String message,Map<String,Object> data){
+		return new RespBean(200,message,data);
 	}
 
 	/**
@@ -53,10 +59,10 @@ public class RespBean {
 	/**
 	 * 失败返回结果
 	 * @param message
-	 * @param obj
+	 * @param data
 	 * @return
 	 */
-	public static RespBean error(String message,Object obj){
-		return new RespBean(500,message,obj);
+	public static RespBean error(String message,Map<String,Object> data){
+		return new RespBean(500,message,data);
 	}
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.admin.mapper.AppletUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lzj.admin.entity.AppletUser">
+        <id column="id" property="id" />
+        <result column="uuid" property="uuid" />
+        <result column="nick_name" property="nickName" />
+        <result column="head_img_url" property="headImgUrl" />
+        <result column="mobile" property="mobile" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="native_place" property="nativePlace" />
+        <result column="address" property="address" />
+        <result column="company" property="company" />
+        <result column="job" property="job" />
+        <result column="wechat" property="wechat" />
+        <result column="user_type" property="userType" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uuid, nick_name, head_img_url, mobile, age, sex, native_place, address, company, job, wechat, user_type, insert_time, update_time
+    </sql>
+
+</mapper>

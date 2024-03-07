@@ -278,11 +278,11 @@ layui.define(["element", "jquery"], function (exports) {
         this.bgColorConfig = function (bgcolorId) {
             var bgColorConfig = [
                 {
-                    headerRight: '#1aa094',
+                    headerRight: '#FF3300',
                     headerRightThis: '#197971',
                     headerLogo: '#243346',
                     menuLeft: '#2f4056',
-                    menuLeftThis: '#1aa094',
+                    menuLeftThis: '#FF3300',
                     menuLeftHover: '#3b3f4b',
                 },
                 {
@@ -290,7 +290,7 @@ layui.define(["element", "jquery"], function (exports) {
                     headerRightThis: '#0c0c0c',
                     headerLogo: '#0c0c0c',
                     menuLeft: '#23262e',
-                    menuLeftThis: '#1aa094',
+                    menuLeftThis: '#FF3300',
                     menuLeftHover: '#3b3f4b',
                 },
                 {

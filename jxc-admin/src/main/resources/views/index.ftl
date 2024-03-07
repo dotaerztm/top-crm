@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>进销存管理系统</title>
+    <title>士气集团后台系统</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -55,7 +55,7 @@
 <div class="main-body">
     <div class="login-main">
         <div class="login-top">
-            <span>进销存系统登录</span>
+            <span>士气集团后台系统</span>
             <span class="bg1"></span>
             <span class="bg2"></span>
         </div>
@@ -71,12 +71,6 @@
                     <input type="password" name="password"   placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
-
-                <div id="validatePanel" class="item" style="width: 137px;">
-                    <input type="text" name="captcha" placeholder="请输入验证码" maxlength="4">
-                    <img id="refreshCaptcha" class="validateImg"  src="${ctx.contextPath}/image" >
-                </div>
-
             </div>
            <div class="tip">
                 <span><input type="checkbox" name="rememberMe" id="rememberMe" value="true" lay-skin="primary"></span>
@@ -90,7 +84,7 @@
     </div>
 </div>
 <div class="footer">
-    上海乐字节教育科技有限公司 ICP认证：沪ICP备19046588号<span class="padding-5">|</span>Copyright@2019乐字节 All Rights Reserved
+    士气集团教育科技有限公司 ICP认证：沪ICP备19046588号<span class="padding-5">|</span>TOP@2023士气集团 All Rights Reserved
 </div>
 
 <script src="${ctx.contextPath}/js/index.js" charset="utf-8"></script>

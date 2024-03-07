@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.admin.mapper.WechatMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lzj.admin.entity.Wechat">
+        <id column="id" property="id" />
+        <result column="openid" property="openid" />
+        <result column="nick_name" property="nickName" />
+        <result column="head_img_url" property="headImgUrl" />
+        <result column="forward_img_url" property="forwardImgUrl" />
+        <result column="social_img_url" property="socialImgUrl" />
+        <result column="is_student" property="isStudent" />
+        <result column="mobile" property="mobile" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, openid, nick_name, head_img_url, forward_img_url, is_student, mobile, insert_time, update_time,social_img_url
+    </sql>
+
+</mapper>

@@ -7,7 +7,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * 乐字节  踏实教育 用心服务
+ * 拦截器 - 登录前限制
+ * 没有登录 不能访问其他页面
  *
  * @author 乐字节--老李
  * @version 1.0
@@ -20,11 +21,18 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return new NoLoginInterceptor();
     }
 
+    /**
+     * addPathPatterns : 拦截的路径
+     * excludePathPatterns ： 放行的路径
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(noLoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index","/user/login",
-                        "/css/**","/error/**","/images/**","/js/**","/lib/**");
+                .excludePathPatterns("/index","/user/login","/test",
+                        "/css/**","/error/**","/images/**","/js/**","/lib/**",
+                        "/image/*","/video/*","/text/*","/imageAndVideo/*",
+                        "/campaign/*","/student/*");
     }
 }

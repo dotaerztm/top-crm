@@ -1,14 +1,27 @@
 server:
   port: 8989
+  ssl:
+    key-store: classpath:shiqijituan.com.jks
+    key-store-password: g93b09j6
+    key-store-type: JKS
   servlet:
     context-path: /
+
 
 spring:
    datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/lzj_jxc?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      username: root
-      password: root
+      #uat-外网
+      #url: jdbc:mysql://43.129.175.238:3306/lzj_jxc?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      #uat-内网
+      #url: jdbc:mysql://192.168.240.13:3306/lzj_jxc?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      #username: root
+      #password: VK3@zuiB3JuFc
+
+       #prod-外网
+      url: jdbc:mysql://47.103.27.218:3306/shiqi_top?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: shiqi_top
+      password: w7xEQ55YQy
       hikari:
         # 连接池名
         pool-name: DateHikariCP
@@ -35,6 +48,13 @@ spring:
      request-context-attribute: ctx
      settings:
         number_format: 0.##
+   #文件上传设置
+   servlet:
+     multipart:
+       #单个文件最大限制
+       max-file-size: 10MB
+       #多个文件最大限制
+       max-request-size: 5MB
 
 # Mybatis-plus配置
 mybatis-plus:
@@ -52,9 +72,6 @@ mybatis-plus:
 logging:
   level:
     com.lzj.admin.mapper: debug
-
-
-
 
  ## 控制台日志输出格式
   pattern:

@@ -1,13 +1,13 @@
 package com.lzj.admin.interceptors;
 
-import com.lzj.admin.pojo.User;
+import com.lzj.admin.entity.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 乐字节  踏实教育 用心服务
+ * 判断是否登录
  *
  * @author 乐字节--老李
  * @version 1.0

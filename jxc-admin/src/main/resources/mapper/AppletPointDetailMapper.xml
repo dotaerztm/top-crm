@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.admin.mapper.AppletPointDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lzj.admin.entity.AppletPointDetail">
+        <id column="id" property="id" />
+        <result column="uuid" property="uuid" />
+        <result column="point" property="point" />
+        <result column="point_type" property="pointType" />
+        <result column="point_status" property="pointStatus" />
+        <result column="works_id" property="worksId" />
+        <result column="redeem_code" property="redeemCode" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uuid, point, point_type, point_status, works_id, redeem_code, insert_time, update_time
+    </sql>
+
+</mapper>
