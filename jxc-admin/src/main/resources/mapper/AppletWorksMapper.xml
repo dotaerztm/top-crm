@@ -11,13 +11,14 @@
         <result column="like_count" property="likeCount" />
         <result column="works_status" property="worksStatus" />
         <result column="works_type" property="worksType" />
+        <result column="sort" property="sort" />
         <result column="insert_time" property="insertTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uuid, title, content, like_count, works_status, works_type, insert_time, update_time
+        id, uuid, title, content, like_count, works_status, works_type,sort, insert_time, update_time
     </sql>
 
 </mapper>

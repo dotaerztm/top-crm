@@ -33,6 +33,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/index","/user/login","/test",
                         "/css/**","/error/**","/images/**","/js/**","/lib/**",
                         "/image/*","/video/*","/text/*","/imageAndVideo/*",
-                        "/campaign/*","/student/*");
+                        "/campaign/*","/student/*",
+                        "/appletIndex/*","/appletCircle/*");
     }
 }

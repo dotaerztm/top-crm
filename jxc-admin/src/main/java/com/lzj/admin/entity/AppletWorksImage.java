@@ -3,8 +3,9 @@ package com.lzj.admin.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class AppletWorksImage implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "作品id")
-    private String worksId;
+    private Integer worksId;
 
     @ApiModelProperty(value = "用户唯一标识")
     private String uuid;
@@ -43,10 +44,10 @@ public class AppletWorksImage implements Serializable {
     private Integer sort;
 
     @ApiModelProperty(value = "新增时间")
-    private LocalDateTime insertTime;
+    private Date insertTime;
 
     @ApiModelProperty(value = "修改时间")
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
 
 }

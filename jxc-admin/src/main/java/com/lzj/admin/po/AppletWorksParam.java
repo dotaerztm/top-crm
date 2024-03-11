@@ -1,16 +1,19 @@
-package com.lzj.admin.entity;
+package com.lzj.admin.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-import java.util.Date;
-
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.lzj.admin.entity.AppletWorksImage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -21,24 +24,23 @@ import lombok.EqualsAndHashCode;
  * @since 2024-03-01
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_applet_works")
-@ApiModel(value="AppletWorks对象", description="小程序作品表")
-public class AppletWorks implements Serializable {
+public class AppletWorksParam implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键id")
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "用户唯一标识")
+    @NotBlank(message = "用户标识不能为空")
     private String uuid;
 
     @ApiModelProperty(value = "标题")
+    @Length(max = 20, message = "标题最长20个字符")
     private String title;
 
     @ApiModelProperty(value = "内容")
+    @Length(max = 300, message = "正文最长300个字符")
     private String content;
 
     @ApiModelProperty(value = "点赞数")
@@ -53,11 +55,7 @@ public class AppletWorks implements Serializable {
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "新增时间")
-    private Date insertTime;
-
-    @ApiModelProperty(value = "修改时间")
-    private Date updateTime;
-
+    @ApiModelProperty(value = "作品图片详情集合")
+    List<AppletWorksImage> worksImageList;
 
 }
