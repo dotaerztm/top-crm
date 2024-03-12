@@ -1,6 +1,5 @@
 package com.lzj.admin.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,17 +13,17 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 小程序-用户积分详情
+ * 小程序用户关注表
  * </p>
  *
  * @author ch_ztm
- * @since 2024-03-01
+ * @since 2024-03-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_applet_point_detail")
-@ApiModel(value="AppletPointDetail对象", description="小程序-用户积分详情")
-public class AppletPointDetail implements Serializable {
+@TableName("t_applet_follow")
+@ApiModel(value="AppletFollow对象", description="小程序用户关注表")
+public class AppletFollow implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,23 +34,14 @@ public class AppletPointDetail implements Serializable {
     @ApiModelProperty(value = "用户唯一标识")
     private String uuid;
 
-    @ApiModelProperty(value = "积分")
-    private BigDecimal point;
+    @ApiModelProperty(value = "关注用户唯一标识")
+    private String followUuid;
 
-    @ApiModelProperty(value = "积分类型")
-    private Integer pointType;
-
-    @ApiModelProperty(value = "积分状态 0:增加积分 1:减少积分")
-    private Integer pointStatus;
-
-    @ApiModelProperty(value = "课程id(兑换积分)")
-    private Integer worksId;
-
-    @ApiModelProperty(value = "兑换码(兑换积分)")
-    private String redeemCode;
+    @ApiModelProperty(value = "关注状态 0:关注 1:已关注 2:互相关注")
+    private Integer followStatus;
 
     @ApiModelProperty(value = "新增时间")
-    private Date insertTime;
+    private Date  insertTime;
 
     @ApiModelProperty(value = "修改时间")
     private Date updateTime;

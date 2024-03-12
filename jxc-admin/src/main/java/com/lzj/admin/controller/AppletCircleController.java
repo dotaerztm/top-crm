@@ -2,9 +2,11 @@ package com.lzj.admin.controller;
 
 import com.lzj.admin.exceptions.ParamsException;
 import com.lzj.admin.model.RespBean;
+import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.po.AppletIndexParam;
 import com.lzj.admin.po.AppletUserParam;
 import com.lzj.admin.po.AppletWorksParam;
+import com.lzj.admin.service.IAppletFollowService;
 import com.lzj.admin.service.IAppletUserService;
 import com.lzj.admin.service.IAppletWorksService;
 import com.lzj.admin.utils.StringUtil;
@@ -36,6 +38,9 @@ public class AppletCircleController {
 
     @Resource
     private IAppletWorksService appletWorksService;
+
+    @Resource
+    private IAppletFollowService appletFollowService;
 
     /**
      * 保存作品
@@ -70,6 +75,11 @@ public class AppletCircleController {
         }
     }
 
+    /**
+     * 修改作品
+     * @param param
+     * @return
+     */
     @ResponseBody
     @RequestMapping("updateWorks")
     public RespBean updateWorks(@RequestBody AppletWorksParam param) {
@@ -91,6 +101,34 @@ public class AppletCircleController {
                 return RespBean.error("图片最多上传9张!");
             }
             appletWorksService.updateWorks(param);
+            return RespBean.success("修改成功!");
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("修改失败!");
+        }
+    }
+
+    /**
+     * 关注
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("follow")
+    public RespBean follow(@RequestBody AppletFollowParam param) {
+        log.info("调用接口【小程序---关注】");
+        try {
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标识不能为空!");
+            }
+            if(StringUtils.isBlank(param.getFollowUuid())){
+                return RespBean.error("用户标识不能为空!");
+            }
+
+            appletFollowService.follow(param);
             return RespBean.success("修改成功!");
         } catch (ParamsException e) {
             e.printStackTrace();
