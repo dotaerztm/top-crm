@@ -48,7 +48,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         //gc.setOutputDir(projectPath + "/jxc-admin/src/main/java");
-        gc.setOutputDir(projectPath + "/进销存项目-免费/002_code/jxc-manager-par/jxc-admin/src/main/java");
+        gc.setOutputDir(projectPath + "/002_code/jxc-manager-par/jxc-admin/src/main/java");
         //作者
         gc.setAuthor("ch_ztm");
         //打开输出目录
@@ -100,7 +100,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/进销存项目-免费/002_code/jxc-manager-par/jxc-admin/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper"
+                return projectPath + "/002_code/jxc-manager-par/jxc-admin/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper"
                         + StringPool.DOT_XML;
             }
         });
