@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2024-03-01
  */
 @Data
-public class AppletFollowParam implements Serializable {
+public class AppletFollowParam extends Pagination implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

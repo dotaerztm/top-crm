@@ -2,6 +2,7 @@ package com.lzj.admin.service;
 
 import com.lzj.admin.entity.AppletFollow;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lzj.admin.model.RespBean;
 import com.lzj.admin.po.AppletFollowParam;
 
 /**
@@ -14,5 +15,8 @@ import com.lzj.admin.po.AppletFollowParam;
  */
 public interface IAppletFollowService extends IService<AppletFollow> {
 
-    void follow(AppletFollowParam param);
+    RespBean follow(AppletFollowParam param);
+
+    RespBean selectFollowByPage(AppletFollowParam param);
+
 }

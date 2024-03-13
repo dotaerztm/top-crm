@@ -111,6 +111,31 @@ public class AppletCircleController {
         }
     }
 
+
+    /**
+     * 关注列表 分页查询
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectFollowByPage")
+    public RespBean selectFollowByPage(@RequestBody AppletFollowParam param) {
+        log.info("调用接口【小程序--关注列表 分页查询】");
+        try {
+            if(null == param.getUuid()){
+                return RespBean.error("作品类别不能为空!");
+            }
+            RespBean respBean = appletFollowService.selectFollowByPage(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
     /**
      * 关注
      * @param param
@@ -128,8 +153,8 @@ public class AppletCircleController {
                 return RespBean.error("用户标识不能为空!");
             }
 
-            appletFollowService.follow(param);
-            return RespBean.success("修改成功!");
+            RespBean respBean = appletFollowService.follow(param);
+            return respBean;
         } catch (ParamsException e) {
             e.printStackTrace();
             return RespBean.error(e.getMsg());
