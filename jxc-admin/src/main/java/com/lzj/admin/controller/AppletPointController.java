@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * <p>
- * 小程序-用户积分表 前端控制器
+ * 小程序-用户积分表 前端控制器111
  * </p>
  *
  * @author ch_ztm
