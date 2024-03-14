@@ -25,4 +25,6 @@ public class AppletUserParam extends Pagination implements Serializable {
 
     private String mobile;
 
+    private String code;
+
 }

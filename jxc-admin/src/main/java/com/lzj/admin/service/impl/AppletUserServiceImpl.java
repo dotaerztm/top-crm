@@ -11,6 +11,7 @@ import com.lzj.admin.mapper.AppletUserMapper;
 import com.lzj.admin.model.RespBean;
 import com.lzj.admin.po.AppletIndexParam;
 import com.lzj.admin.po.AppletUserParam;
+import com.lzj.admin.po.TokenPO;
 import com.lzj.admin.po.VideoParam;
 import com.lzj.admin.service.IAppletUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import com.lzj.admin.utils.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,19 +39,43 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
     @Autowired
     StudentServiceImpl studentServiceImpl;
 
+    @Autowired
+    WechatServiceImpl wechatServiceImpl;
+
+    //生产
+    private  String APP_ID = "wx6fea344070c8036b";
+    private  String APP_SECRET = "84c70aed97b683e92f2f16ec31fd2781";
+
+
     @Override
     public RespBean login(AppletUserParam param) {
-        //查询该手机号 是否在学员名单
-        Integer studentCount = studentServiceImpl.selectCountByMobile(param.getMobile());
-        AssertUtil.isTrue(studentCount == 0,"您所用的手机号未匹配到士气身份信息,如有疑问请联系XXXX!");
-        AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>().eq("mobile",param.getMobile()));
-        //第一次登录 api接口 根据手机号获取用户信息-uuid
-        if(null == userEntity){
+        try {
+            //获取token
+            TokenPO tokenEntity = wechatServiceImpl.getAccessTokenByApplet(APP_ID, APP_SECRET);
+            String accessToken = tokenEntity.getAccess_token();
+            System.out.println("accessToken==="+accessToken);
+            //获取明文手机号
+            TokenPO phoneEntity = wechatServiceImpl.getAppletPhone(accessToken,param.getCode());
+            System.out.println("phoneEntity==="+phoneEntity);
 
+            String phone = phoneEntity.getPurePhoneNumber();
+            System.out.println("phone==="+phone);
+
+            //查询该手机号 是否在学员名单
+            Integer studentCount = studentServiceImpl.selectCountByMobile(phone);
+            AssertUtil.isTrue(studentCount == 0, "您所用的手机号未匹配到士气身份信息,如有疑问请联系XXXX!");
+            AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>().eq("mobile", param.getMobile()));
+            //第一次登录
+            if (null == userEntity) {
+
+            }
+            Map<String, Object> map = new HashMap<>();
+
+            return RespBean.success("成功", map);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Map<String, Object> map = new HashMap<>();
-
-        return RespBean.success("成功",map);
+        return null;
     }
 
 

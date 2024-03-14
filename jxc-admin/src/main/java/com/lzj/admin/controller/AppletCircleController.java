@@ -6,6 +6,7 @@ import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.po.AppletIndexParam;
 import com.lzj.admin.po.AppletUserParam;
 import com.lzj.admin.po.AppletWorksParam;
+import com.lzj.admin.service.IAppletFansService;
 import com.lzj.admin.service.IAppletFollowService;
 import com.lzj.admin.service.IAppletUserService;
 import com.lzj.admin.service.IAppletWorksService;
@@ -41,6 +42,10 @@ public class AppletCircleController {
 
     @Resource
     private IAppletFollowService appletFollowService;
+
+    @Resource
+    private IAppletFansService appletFansService;
+
 
     /**
      * 保存作品
@@ -112,29 +117,7 @@ public class AppletCircleController {
     }
 
 
-    /**
-     * 关注列表 分页查询
-     * @param param
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("selectFollowByPage")
-    public RespBean selectFollowByPage(@RequestBody AppletFollowParam param) {
-        log.info("调用接口【小程序--关注列表 分页查询】");
-        try {
-            if(null == param.getUuid()){
-                return RespBean.error("作品类别不能为空!");
-            }
-            RespBean respBean = appletFollowService.selectFollowByPage(param);
-            return respBean;
-        } catch (ParamsException e) {
-            e.printStackTrace();
-            return RespBean.error(e.getMsg());
-        }catch (Exception e) {
-            e.printStackTrace();
-            return RespBean.error("查询失败!");
-        }
-    }
+
 
     /**
      * 关注
@@ -161,6 +144,54 @@ public class AppletCircleController {
         }catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("修改失败!");
+        }
+    }
+
+    /**
+     * 关注列表 分页查询
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectFollowByPage")
+    public RespBean selectFollowByPage(@RequestBody AppletFollowParam param) {
+        log.info("调用接口【小程序--关注列表 分页查询】");
+        try {
+            if(null == param.getUuid()){
+                return RespBean.error("作品类别不能为空!");
+            }
+            RespBean respBean = appletFollowService.selectFollowByPage(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
+    /**
+     * 粉丝列表 分页查询
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectFansByPage")
+    public RespBean selectFansByPage(@RequestBody AppletFollowParam param) {
+        log.info("调用接口【小程序--粉丝列表 分页查询】");
+        try {
+            if(null == param.getUuid()){
+                return RespBean.error("作品类别不能为空!");
+            }
+            RespBean respBean = appletFansService.selectFansByPage(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
         }
     }
 

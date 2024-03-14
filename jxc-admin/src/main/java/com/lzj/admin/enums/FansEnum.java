@@ -1,6 +1,7 @@
 package com.lzj.admin.enums;
 
 public enum FansEnum {
+	CANCEL_FOLLOW(0,"取消关注"),
 	BACK_FOLLOWED(1,"回关"),
 	MUTUAL(2,"互相关注");
 

@@ -55,6 +55,8 @@ public class AppletIndexController {
         }
     }
 
+
+
     /**
      * 获取首页轮显图片List
      * @param param

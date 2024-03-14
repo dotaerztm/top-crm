@@ -156,6 +156,20 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         return sendGetRequest(url);
     }
 
+
+
+    public  TokenPO getAccessTokenByApplet(String appId, String appSecret) throws IOException {
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId +
+                "&secret=" + appSecret;
+        return sendGetRequest(url);
+    }
+
+    public TokenPO getAppletPhone(String accessToken,String code) throws IOException {
+        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=" + accessToken +
+                "&code=" + code;
+        return sendGetRequest(url);
+    }
+
     private static TokenPO getTicket(String token) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + token +
                 "&type=jsapi";
