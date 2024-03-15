@@ -44,4 +44,8 @@ public class TokenPO extends Pagination implements Serializable {
     //区号
     private String countryCode;
 
+    //小程序用户在开放平台唯一标识符
+    private String unionid;
+
+
 }

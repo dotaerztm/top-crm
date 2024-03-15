@@ -22,5 +22,11 @@ public interface IAppletUserService extends IService<AppletUser> {
      */
     RespBean login(AppletUserParam param);
 
+    /**
+     * 小程序 用户注册
+     * @param param
+     * @return
+     */
+    RespBean register(AppletUserParam param);
 
 }

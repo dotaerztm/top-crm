@@ -17,6 +17,8 @@ public class AppletUserParam extends Pagination implements Serializable {
 
     private String openid;
 
+    private String uuid;
+
     private String nickName;
 
     private String headImgUrl;

@@ -150,6 +150,8 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         return sendGetRequest(url);
     }
 
+
+
     private static TokenPO getAccessTokenByJsSDK() throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + APP_ID +
                 "&secret=" + APP_SECRET;
@@ -167,6 +169,14 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
     public TokenPO getAppletPhone(String accessToken,String code) throws IOException {
         String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=" + accessToken +
                 "&code=" + code;
+        return sendGetRequest(url);
+    }
+
+    private TokenPO getUnioniIdByApplet(String appId, String appSecret,String code) throws IOException {
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
+                "&secret=" + appSecret +
+                "&code=" + code +
+                "&grant_type=authorization_code";
         return sendGetRequest(url);
     }
 
