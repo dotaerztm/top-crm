@@ -14,6 +14,7 @@ import com.lzj.admin.po.VideoParam;
 import com.lzj.admin.service.IAppletUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lzj.admin.utils.AssertUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,26 +46,44 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
     @Override
     public RespBean login(AppletUserParam param) {
         try {
-            //获取token
-            TokenPO tokenEntity = wechatServiceImpl.getAccessTokenByApplet(APP_ID, APP_SECRET);
-            String accessToken = tokenEntity.getAccess_token();
-            System.out.println("accessToken==="+accessToken);
-            //获取明文手机号
-            TokenPO phoneEntity = wechatServiceImpl.getAppletPhone(accessToken,param.getCode());
-            System.out.println("phoneEntity==="+phoneEntity);
+            //根据code获取unionId
+            TokenPO unionIdEntity = wechatServiceImpl.getUnioniIdByApplet(APP_ID,APP_SECRET,param.getCode());
+            String uuid = unionIdEntity.getUnionid();
+            System.out.println("uuid==="+uuid);
 
-            String phone = phoneEntity.getPurePhoneNumber();
-            System.out.println("phone==="+phone);
+            //查询uuid是否存在库中
+            AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>()
+                    .eq("uuid", param.getUuid()));
 
-            //查询该手机号 是否在学员名单
-            Integer studentCount = studentServiceImpl.selectCountByMobile(phone);
-            AssertUtil.isTrue(studentCount == 0, "您所用的手机号未匹配到士气身份信息,如有疑问请联系XXXX!");
-            AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>().eq("mobile", param.getMobile()));
-            //第一次登录
-            if (null == userEntity) {
-
-            }
             Map<String, Object> map = new HashMap<>();
+            map.put("uuid",param.getUuid());
+
+            //如果有记录 并有手机号
+            if(null != userEntity && !StringUtils.isBlank(userEntity.getMobile())){
+                map.put("mobile",userEntity.getMobile());
+                map.put("status",userEntity.getUserType());
+                //如果是游客状态 查看此刻是否在学员名单中
+                if(userEntity.getUserType() == AppletUserEnum.TOURIST.getType()){
+                    Integer studentCount = studentServiceImpl.selectCountByMobile(userEntity.getMobile());
+                    if(studentCount > 0){
+                        userEntity.setUserType(AppletUserEnum.STUDENT.getType());
+                        userEntity.setUpdateTime(new Date());
+                        this.updateById(userEntity);
+                        map.put("status",AppletUserEnum.STUDENT.getType());
+                    }
+                }
+            }else{
+                map.put("mobile",null);
+                map.put("status",AppletUserEnum.TOURIST.getType());
+            }
+            //首次登录 新增用户记录
+            if(null == userEntity){
+                AppletUser addEntity = new AppletUser();
+                addEntity.setUuid(param.getUuid());
+                addEntity.setUserType(AppletUserEnum.TOURIST.getType());
+                addEntity.setInsertTime(new Date());
+                this.save(addEntity);
+            }
 
             return RespBean.success("成功", map);
         } catch (IOException e) {
@@ -92,15 +111,14 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
 
             Integer userType = studentCount == 0 ? AppletUserEnum.TOURIST.getType() : AppletUserEnum.STUDENT.getType();
 
-            //查询手机号是否存在库中
+            //查询uuid是否存在库中
             AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>()
-                    .eq("mobile", param.getMobile())
                     .eq("uuid", param.getUuid()));
             //首次登录 新增用户记录
             if(null == userEntity){
                 AppletUser addEntity = new AppletUser();
                 addEntity.setUuid(param.getUuid());
-                addEntity.setMobile(param.getMobile());
+                addEntity.setMobile(phone);
                 addEntity.setUserType(userType);
                 addEntity.setInsertTime(new Date());
                 this.save(addEntity);
@@ -111,13 +129,14 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
             //如果存在学员名单 并且 之前登录过  置为 学员用户
             if(null != userEntity && userEntity.getUserType() == AppletUserEnum.TOURIST.getType()){
                 userEntity.setUserType(AppletUserEnum.STUDENT.getType());
+                userEntity.setMobile(phone);
                 userEntity.setUpdateTime(new Date());
                 this.updateById(userEntity);
             }
 
             Map<String, Object> map = new HashMap<>();
             map.put("uuid",param.getUuid());
-            map.put("mobile",param.getUuid());
+            map.put("mobile",phone);
             map.put("status",userType);
 
             return RespBean.success("成功", map);

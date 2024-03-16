@@ -116,6 +116,28 @@ public class AppletCircleController {
         }
     }
 
+    /**
+     * 圈子 作品分页查询
+     * @param param
+     * @return
+     */
+//    @ResponseBody
+//    @RequestMapping("selectWorksByPage")
+//    public RespBean selectWorksByPage(@RequestBody AppletWorksParam param) {
+//        log.info("调用接口【小程序--圈子作品 分页查询】");
+//        try {
+//
+//            RespBean respBean = appletWorksService.selectWorksByPage(param);
+//            return respBean;
+//        } catch (ParamsException e) {
+//            e.printStackTrace();
+//            return RespBean.error(e.getMsg());
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            return RespBean.error("查询失败!");
+//        }
+//    }
+
 
 
 
@@ -147,6 +169,8 @@ public class AppletCircleController {
         }
     }
 
+
+
     /**
      * 关注列表 分页查询
      * @param param
@@ -158,7 +182,7 @@ public class AppletCircleController {
         log.info("调用接口【小程序--关注列表 分页查询】");
         try {
             if(null == param.getUuid()){
-                return RespBean.error("作品类别不能为空!");
+                return RespBean.error("用户标示不能为空!");
             }
             RespBean respBean = appletFollowService.selectFollowByPage(param);
             return respBean;
@@ -182,7 +206,7 @@ public class AppletCircleController {
         log.info("调用接口【小程序--粉丝列表 分页查询】");
         try {
             if(null == param.getUuid()){
-                return RespBean.error("作品类别不能为空!");
+                return RespBean.error("用户标示不能为空!");
             }
             RespBean respBean = appletFansService.selectFansByPage(param);
             return respBean;
@@ -194,5 +218,33 @@ public class AppletCircleController {
             return RespBean.error("查询失败!");
         }
     }
+
+    /**
+     * 查看 单个作品
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectWorksById")
+    public RespBean selectWorksById(@RequestBody AppletWorksParam param) {
+        log.info("调用接口【小程序--单个作品 查询】");
+        try {
+            if(null == param.getId()){
+                return RespBean.error("作品id不能为空!");
+            }
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标示不能为空!");
+            }
+            RespBean respBean = appletWorksService.selectWorksById(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
 
 }

@@ -3,12 +3,12 @@ package com.lzj.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lzj.admin.entity.AppletWorks;
-import com.lzj.admin.entity.AppletWorksImage;
-import com.lzj.admin.entity.Video;
+import com.lzj.admin.entity.*;
+import com.lzj.admin.enums.AppletUserEnum;
 import com.lzj.admin.mapper.AppletWorksMapper;
 import com.lzj.admin.model.RespBean;
 import com.lzj.admin.po.AppletIndexParam;
+import com.lzj.admin.po.AppletWorksPO;
 import com.lzj.admin.po.AppletWorksParam;
 import com.lzj.admin.service.IAppletWorksService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,6 +38,10 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
     @Autowired
     AppletWorksImageServiceImpl appletWorksImageServiceImpl;
 
+    @Autowired
+    AppletUserServiceImpl appletUserServiceImpl;
+
+
 
     @Override
     public RespBean selectWorksByPage(AppletIndexParam param) {
@@ -45,7 +49,9 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
         QueryWrapper<AppletWorks> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("works_type",param.getWorksType())
                 .eq("works_status",1)
-                .orderByAsc("sort");
+                .eq("is_del",0)
+                .orderByAsc("sort")
+                .orderByDesc("insert_time");
         IPage<AppletWorks> pageList = this.page(page, queryWrapper);
         Map<String, Object> map = new HashMap<>();
         map.put("list",pageList.getRecords());
@@ -92,5 +98,34 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
             list.forEach( p -> p.setUpdateTime(new Date()));
             appletWorksImageServiceImpl.updateWorkImageList(param.getWorksImageList());
         }
+    }
+
+
+    @Override
+    public RespBean selectWorksById(AppletWorksParam param) {
+        AppletWorks entity = this.baseMapper.selectById(param.getId());
+        AssertUtil.isTrue( null == entity,"没有该作品信息!");
+
+        AppletUser userEntity = appletUserServiceImpl.getBaseMapper().selectOne(
+                new QueryWrapper<AppletUser>().eq("uuid",param.getUuid()));
+        AssertUtil.isTrue( null == userEntity,"没有该作者信息!");
+
+       // List<AppletWorksImage> worksImageList =
+
+        AppletWorksPO PO = new AppletWorksPO();
+
+        BeanUtils.copyProperties(userEntity, PO);
+        BeanUtils.copyProperties(entity, PO);
+
+
+        if(entity.getUuid() != param.getUuid()){
+            PO.setIsMe(false);
+        }else{
+            PO.setIsMe(true);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("works",map);
+
+        return RespBean.success("成功",map);
     }
 }

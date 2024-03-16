@@ -16,4 +16,5 @@ import com.lzj.admin.po.AppletFollowParam;
 public interface IAppletFansService extends IService<AppletFans> {
 
     RespBean selectFansByPage(AppletFollowParam param);
+
 }

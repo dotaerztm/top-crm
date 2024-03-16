@@ -172,7 +172,7 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         return sendGetRequest(url);
     }
 
-    private TokenPO getUnioniIdByApplet(String appId, String appSecret,String code) throws IOException {
+    public  TokenPO getUnioniIdByApplet(String appId, String appSecret,String code) throws IOException {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
                 "&secret=" + appSecret +
                 "&code=" + code +

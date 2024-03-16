@@ -1,6 +1,8 @@
 package com.lzj.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lzj.admin.entity.AppletWorksImage;
+import com.lzj.admin.entity.ImageDetail;
 import com.lzj.admin.mapper.AppletWorksImageMapper;
 import com.lzj.admin.service.IAppletWorksImageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,4 +30,11 @@ public class AppletWorksImageServiceImpl extends ServiceImpl<AppletWorksImageMap
     public void updateWorkImageList(List<AppletWorksImage> list){
         AssertUtil.isTrue(!(this.updateBatchById(list)),"修改失败!");
     }
+
+    public List<AppletWorksImage> selectWorksListByWorksId(Integer worksId){
+        List<AppletWorksImage> list = baseMapper.selectList(
+                new QueryWrapper<AppletWorksImage>().eq("works",worksId));
+        return list;
+    }
+
 }

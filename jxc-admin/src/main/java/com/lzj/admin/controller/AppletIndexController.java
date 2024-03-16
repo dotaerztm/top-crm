@@ -40,11 +40,39 @@ public class AppletIndexController {
     public RespBean login(@RequestBody AppletUserParam param) {
         log.info("调用接口【小程序---登录】");
         try {
-            if(StringUtils.isBlank(param.getMobile())){
-                return RespBean.error("手机号不能为空!");
+            if(StringUtils.isBlank(param.getCode())){
+                return RespBean.error("code不能为空!");
             }
 
             RespBean respBean = appletUserService.login(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
+    /**
+     * 小程序 注册
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("register")
+    public RespBean register(@RequestBody AppletUserParam param) {
+        log.info("调用接口【小程序---注册】");
+        try {
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("uuid不能为空!");
+            }
+            if(StringUtils.isBlank(param.getCode())){
+                return RespBean.error("code不能为空!");
+            }
+
+            RespBean respBean = appletUserService.register(param);
             return respBean;
         } catch (ParamsException e) {
             e.printStackTrace();
