@@ -90,25 +90,22 @@ public class AppletIndexController {
      * @param param
      * @return
      */
-    @ResponseBody
-    @RequestMapping("selectWheelImageList ")
-    public RespBean selectWheelImageList(@RequestBody AppletUserParam param) {
-        log.info("调用接口【小程序---登录】");
-        try {
-            if(StringUtils.isBlank(param.getMobile())){
-                return RespBean.error("手机号不能为空!");
-            }
-
-            RespBean respBean = appletUserService.login(param);
-            return respBean;
-        } catch (ParamsException e) {
-            e.printStackTrace();
-            return RespBean.error(e.getMsg());
-        }catch (Exception e) {
-            e.printStackTrace();
-            return RespBean.error("查询失败!");
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping("selectBannerByPage ")
+//    public RespBean selectBannerByPage(@RequestBody AppletIndexParam param) {
+//        log.info("调用接口【小程序---登录】");
+//        try {
+//
+//            RespBean respBean = appletUserService.login(param);
+//            return respBean;
+//        } catch (ParamsException e) {
+//            e.printStackTrace();
+//            return RespBean.error(e.getMsg());
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            return RespBean.error("查询失败!");
+//        }
+//    }
 
     /**
      * 作品分页查询

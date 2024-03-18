@@ -53,6 +53,7 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
                 .orderByAsc("sort")
                 .orderByDesc("insert_time");
         IPage<AppletWorks> pageList = this.page(page, queryWrapper);
+
         Map<String, Object> map = new HashMap<>();
         map.put("list",pageList.getRecords());
         map.put("count",pageList.getRecords().size());
@@ -107,7 +108,7 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
         AssertUtil.isTrue( null == entity,"没有该作品信息!");
 
         AppletUser userEntity = appletUserServiceImpl.getBaseMapper().selectOne(
-                new QueryWrapper<AppletUser>().eq("uuid",param.getUuid()));
+                new QueryWrapper<AppletUser>().eq("uuid",entity.getUuid()));
         AssertUtil.isTrue( null == userEntity,"没有该作者信息!");
 
        // List<AppletWorksImage> worksImageList =
@@ -117,14 +118,14 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
         BeanUtils.copyProperties(userEntity, PO);
         BeanUtils.copyProperties(entity, PO);
 
-
-        if(entity.getUuid() != param.getUuid()){
-            PO.setIsMe(false);
+        //判断是否自己作品
+        if(entity.getUuid().equals(param.getUuid())){
+            PO.setIsMe(1);
         }else{
-            PO.setIsMe(true);
+            PO.setIsMe(0);
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("works",map);
+        map.put("works",PO);
 
         return RespBean.success("成功",map);
     }

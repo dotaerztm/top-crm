@@ -54,6 +54,9 @@ public class AppletWorksParam implements Serializable {
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
+    @ApiModelProperty(value = "缩略图url")
+    private String imageUrl;
+
     @ApiModelProperty(value = "作品图片详情集合")
     List<AppletWorksImage> worksImageList;
 

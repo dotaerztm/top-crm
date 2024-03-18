@@ -53,7 +53,7 @@ public class AppletWorksPO implements Serializable {
     List<AppletWorksImage> worksImageList;
 
     @ApiModelProperty(value = "是否自己作品 0:否 1:是")
-    Boolean isMe;
+    Integer isMe;
 
     @ApiModelProperty(value = "昵称")
     private String nickName;

@@ -59,6 +59,9 @@ public class AppletWorks implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "0:正常 1:已删除")
-    private Integer idDel;
+    private Integer isDel;
+
+    @ApiModelProperty(value = "作品缩略图")
+    private String imageUrl;
 
 }

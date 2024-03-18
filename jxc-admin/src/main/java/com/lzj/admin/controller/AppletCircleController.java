@@ -64,7 +64,7 @@ public class AppletCircleController {
                 return RespBean.error("标题最长限制为20个中文字符!");
             }
             if(StringUtils.isNotBlank(param.getContent()) && param.getTitle().length() > 300){
-                return RespBean.error("标题最长限制为20个中文字符!");
+                return RespBean.error("标题最长限制为2300个中文字符!");
             }
             if(!CollectionUtils.isEmpty(param.getWorksImageList()) && param.getWorksImageList().size() > 9){
                 return RespBean.error("图片最多上传9张!");
