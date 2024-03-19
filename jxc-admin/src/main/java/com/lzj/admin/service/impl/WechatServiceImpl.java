@@ -16,10 +16,8 @@ import com.lzj.admin.utils.EntityToMapConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -167,15 +165,14 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
     }
 
     public TokenPO getAppletPhone(String accessToken,String code) throws IOException {
-        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=" + accessToken +
-                "&code=" + code;
-        return sendGetRequest(url);
+        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber";
+        return sendGetRequestByPost(url,accessToken,code);
     }
 
     public  TokenPO getUnioniIdByApplet(String appId, String appSecret,String code) throws IOException {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
                 "&secret=" + appSecret +
-                "&code=" + code +
+                "&js_code=" + code +
                 "&grant_type=authorization_code";
         return sendGetRequest(url);
     }
@@ -215,6 +212,38 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         } else {
             throw new IOException("HTTP GET request failed with error code: " + responseCode);
         }
+    }
+
+    private static TokenPO sendGetRequestByPost(String urlStr,String accessToken,String code) throws IOException {
+        String method = "POST";
+        String postData = "{\"access_token\": \"accessToken\", \"code\": \"code\"}";
+
+        URL url = new URL(urlStr);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod(method);
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStream outputStream = connection.getOutputStream();
+        outputStream.write(postData.getBytes());
+        outputStream.flush();
+        outputStream.close();
+
+        int responseCode = connection.getResponseCode();
+        StringBuilder response = new StringBuilder();
+        String line;
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+        } else {
+            // 处理请求失败的情况
+            System.out.println("请求失败：" + responseCode);
+        }
+        return StringToEntity(response.toString());
     }
 
 

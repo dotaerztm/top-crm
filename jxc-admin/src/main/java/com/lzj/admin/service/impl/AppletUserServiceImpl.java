@@ -48,15 +48,16 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
         try {
             //根据code获取unionId
             TokenPO unionIdEntity = wechatServiceImpl.getUnioniIdByApplet(APP_ID,APP_SECRET,param.getCode());
-            String uuid = unionIdEntity.getUnionid();
+            //String uuid = unionIdEntity.getUnionid();
+            String uuid = unionIdEntity.getOpenid();
             System.out.println("uuid==="+uuid);
 
             //查询uuid是否存在库中
             AppletUser userEntity = this.getOne(new QueryWrapper<AppletUser>()
-                    .eq("uuid", param.getUuid()));
+                    .eq("uuid", uuid));
 
             Map<String, Object> map = new HashMap<>();
-            map.put("uuid",param.getUuid());
+            map.put("uuid",uuid);
 
             //如果有记录 并有手机号
             if(null != userEntity && !StringUtils.isBlank(userEntity.getMobile())){
@@ -79,7 +80,7 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
             //首次登录 新增用户记录
             if(null == userEntity){
                 AppletUser addEntity = new AppletUser();
-                addEntity.setUuid(param.getUuid());
+                addEntity.setUuid(uuid);
                 addEntity.setUserType(AppletUserEnum.TOURIST.getType());
                 addEntity.setInsertTime(new Date());
                 this.save(addEntity);
