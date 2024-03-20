@@ -104,7 +104,7 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
             TokenPO phoneEntity = wechatServiceImpl.getAppletPhone(accessToken,param.getCode());
             System.out.println("phoneEntity==="+phoneEntity);
 
-            String phone = phoneEntity.getPurePhoneNumber();
+            String phone = phoneEntity.getPhone_info().getPurePhoneNumber();
             System.out.println("phone==="+phone);
 
             //查询该手机号 是否在学员名单

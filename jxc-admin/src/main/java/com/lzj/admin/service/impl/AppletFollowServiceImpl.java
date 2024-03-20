@@ -3,13 +3,12 @@ package com.lzj.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lzj.admin.entity.AppletFans;
-import com.lzj.admin.entity.AppletFollow;
-import com.lzj.admin.entity.AppletWorks;
-import com.lzj.admin.entity.Image;
+import com.lzj.admin.entity.*;
 import com.lzj.admin.enums.FollowEnum;
 import com.lzj.admin.mapper.AppletFollowMapper;
 import com.lzj.admin.model.RespBean;
+import com.lzj.admin.po.AppletFansPO;
+import com.lzj.admin.po.AppletFollowPO;
 import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.po.AppletIndexParam;
 import com.lzj.admin.service.IAppletFollowService;
@@ -18,10 +17,10 @@ import com.lzj.admin.utils.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -121,9 +120,24 @@ public class AppletFollowServiceImpl extends ServiceImpl<AppletFollowMapper, App
                 .ne("follow_status",FollowEnum.FOLLOW.getType())
                 .orderByDesc("insert_time");
         IPage<AppletFollow> pageList = this.page(page, queryWrapper);
-        Map<String, Object> map = new HashMap<>();
-        map.put("list",pageList.getRecords());
-        map.put("count",pageList.getRecords().size());
-        return RespBean.success("成功",map);
+        Map<String, Object> returnMap = new HashMap<>();
+        List<AppletFollowPO> list = new ArrayList<>();
+        //查询粉丝List用户信息
+        List<AppletUser> fansList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(pageList.getRecords())){
+            list = pageList.getRecords().stream()
+                    .map(map -> fansList.stream()
+                            .filter(x -> Objects.equals(x.getId(), map.getFollowUuid()))
+                            .findFirst().map(x -> {
+                                AppletFollowPO entity = new AppletFollowPO();
+                                entity.setHeadImgUrl(x.getHeadImgUrl());
+                                entity.setNickName(x.getNickName());
+                                return entity;
+                            }).orElse(null))
+                    .filter(Objects::nonNull).collect(Collectors.toList());
+        }
+        returnMap.put("list",list);
+        returnMap.put("count",pageList.getRecords().size());
+        return RespBean.success("成功",returnMap);
     }
 }

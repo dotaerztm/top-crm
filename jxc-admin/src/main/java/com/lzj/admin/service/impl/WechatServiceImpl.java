@@ -13,6 +13,7 @@ import com.lzj.admin.po.WechatParam;
 import com.lzj.admin.service.IWechatService;
 import com.lzj.admin.utils.AssertUtil;
 import com.lzj.admin.utils.EntityToMapConverter;
+import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,8 +166,8 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
     }
 
     public TokenPO getAppletPhone(String accessToken,String code) throws IOException {
-        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber";
-        return sendGetRequestByPost(url,accessToken,code);
+        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token="+accessToken;
+        return sendGetRequestByPost(url,code);
     }
 
     public  TokenPO getUnioniIdByApplet(String appId, String appSecret,String code) throws IOException {
@@ -214,9 +215,10 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         }
     }
 
-    private static TokenPO sendGetRequestByPost(String urlStr,String accessToken,String code) throws IOException {
+    private static TokenPO sendGetRequestByPost(String urlStr,String code) throws IOException {
         String method = "POST";
-        String postData = "{\"access_token\": \"accessToken\", \"code\": \"code\"}";
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("code", code);
 
         URL url = new URL(urlStr);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -225,7 +227,7 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
         connection.setRequestProperty("Content-Type", "application/json");
 
         OutputStream outputStream = connection.getOutputStream();
-        outputStream.write(postData.getBytes());
+        outputStream.write(jsonData.toString().getBytes("UTF-8"));
         outputStream.flush();
         outputStream.close();
 
@@ -243,6 +245,7 @@ public class WechatServiceImpl extends ServiceImpl<WechatMapper, Wechat> impleme
             // 处理请求失败的情况
             System.out.println("请求失败：" + responseCode);
         }
+        System.out.println("response.toString=="+response);
         return StringToEntity(response.toString());
     }
 

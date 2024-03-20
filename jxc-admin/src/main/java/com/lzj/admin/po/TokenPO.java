@@ -47,5 +47,7 @@ public class TokenPO extends Pagination implements Serializable {
     //小程序用户在开放平台唯一标识符
     private String unionid;
 
+    private PhonePO phone_info;
+
 
 }
