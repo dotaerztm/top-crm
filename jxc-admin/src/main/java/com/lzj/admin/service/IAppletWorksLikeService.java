@@ -2,6 +2,7 @@ package com.lzj.admin.service;
 
 import com.lzj.admin.entity.AppletWorksLike;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lzj.admin.po.AppletWorksLikeParam;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAppletWorksLikeService extends IService<AppletWorksLike> {
 
+    void worksLike(AppletWorksLikeParam param);
 }

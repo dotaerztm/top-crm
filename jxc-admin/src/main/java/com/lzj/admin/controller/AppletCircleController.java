@@ -2,14 +2,8 @@ package com.lzj.admin.controller;
 
 import com.lzj.admin.exceptions.ParamsException;
 import com.lzj.admin.model.RespBean;
-import com.lzj.admin.po.AppletFollowParam;
-import com.lzj.admin.po.AppletIndexParam;
-import com.lzj.admin.po.AppletUserParam;
-import com.lzj.admin.po.AppletWorksParam;
-import com.lzj.admin.service.IAppletFansService;
-import com.lzj.admin.service.IAppletFollowService;
-import com.lzj.admin.service.IAppletUserService;
-import com.lzj.admin.service.IAppletWorksService;
+import com.lzj.admin.po.*;
+import com.lzj.admin.service.*;
 import com.lzj.admin.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -45,6 +39,9 @@ public class AppletCircleController {
 
     @Resource
     private IAppletFansService appletFansService;
+
+    @Resource
+    private IAppletWorksLikeService appletWorksLikeService;
 
 
     /**
@@ -243,6 +240,36 @@ public class AppletCircleController {
         }catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("查询失败!");
+        }
+    }
+
+    /**
+     * 点赞
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("worksLike")
+    public RespBean worksLike(@RequestBody AppletWorksLikeParam param) {
+        log.info("调用接口【小程序---点赞】");
+        try {
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标识不能为空!");
+            }
+            if(null == param.getWorksId()){
+                return RespBean.error("作品id不能为空!");
+            }
+            if(null == param.getLikeStatus()){
+                return RespBean.error("状态不能为空!");
+            }
+            appletWorksLikeService.worksLike(param);
+            return RespBean.success("保存成功!");
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("保存失败!");
         }
     }
 
