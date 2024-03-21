@@ -101,6 +101,21 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
         }
     }
 
+    @Override
+    public void delWorks(AppletWorksParam param) {
+        AppletWorks appletWorks = this.baseMapper.selectById(param.getId());
+        AssertUtil.isTrue( null == appletWorks,"没有该作品信息!");
+        AssertUtil.isTrue( !param.getUuid().equals(appletWorks.getUuid()),"只有作者可以删除作品!");
+
+        AppletWorks entity = new AppletWorks();
+        entity.setId(param.getId());
+        entity.setWorksStatus(3);//修改为已删除
+        entity.setUpdateTime(new Date());
+        AssertUtil.isTrue(!(this.updateById(entity)),"保存失败!");
+
+    }
+
+
 
     @Override
     public RespBean selectWorksById(AppletWorksParam param) {

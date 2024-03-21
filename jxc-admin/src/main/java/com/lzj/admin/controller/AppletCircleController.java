@@ -114,6 +114,33 @@ public class AppletCircleController {
     }
 
     /**
+     * 删除作品
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("delWorks")
+    public RespBean delWorks(@RequestBody AppletWorksParam param) {
+        log.info("调用接口【小程序---删除作品】");
+        try {
+            if(null == param.getId()){
+                return RespBean.error("主键不能为空!");
+            }
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标识不能为空!");
+            }
+            appletWorksService.delWorks(param);
+            return RespBean.success("删除成功!");
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("删除失败!");
+        }
+    }
+
+    /**
      * 圈子 作品分页查询
      * @param param
      * @return

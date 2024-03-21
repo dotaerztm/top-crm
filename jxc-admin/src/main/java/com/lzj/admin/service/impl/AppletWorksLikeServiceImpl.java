@@ -33,7 +33,7 @@ public class AppletWorksLikeServiceImpl extends ServiceImpl<AppletWorksLikeMappe
     public void worksLike(AppletWorksLikeParam param) {
         //查看用户是否点赞过该作品
         AppletWorksLike likeEntity = this.baseMapper.selectOne(new QueryWrapper<AppletWorksLike>()
-                .eq("words_id",param.getWorksId())
+                .eq("works_id",param.getWorksId())
                 .eq("uuid", param.getUuid()));
         //如果没有 新增点赞记录
         if(null == likeEntity){

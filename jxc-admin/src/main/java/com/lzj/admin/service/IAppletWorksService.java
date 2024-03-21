@@ -23,5 +23,7 @@ public interface IAppletWorksService extends IService<AppletWorks> {
 
     void updateWorks(AppletWorksParam param);
 
+    void delWorks(AppletWorksParam param);
+
     RespBean selectWorksById(AppletWorksParam param);
 }

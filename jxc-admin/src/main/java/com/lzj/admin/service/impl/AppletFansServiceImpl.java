@@ -5,19 +5,24 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lzj.admin.entity.AppletFans;
 import com.lzj.admin.entity.AppletFollow;
+import com.lzj.admin.entity.AppletUser;
 import com.lzj.admin.enums.FansEnum;
 import com.lzj.admin.enums.FollowEnum;
 import com.lzj.admin.mapper.AppletFansMapper;
 import com.lzj.admin.model.RespBean;
+import com.lzj.admin.po.AppletFansPO;
+import com.lzj.admin.po.AppletFollowPO;
 import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.service.IAppletFansService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lzj.admin.utils.AssertUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -29,6 +34,9 @@ import java.util.Map;
  */
 @Service
 public class AppletFansServiceImpl extends ServiceImpl<AppletFansMapper, AppletFans> implements IAppletFansService {
+
+    @Autowired
+    AppletUserServiceImpl appletUserServiceImpl;
 
     public AppletFans selectFans(AppletFollowParam param){
         //查询粉丝状态
@@ -90,10 +98,30 @@ public class AppletFansServiceImpl extends ServiceImpl<AppletFansMapper, AppletF
                 .ne("fans_status",FollowEnum.FOLLOW.getType())
                 .orderByDesc("insert_time");
         IPage<AppletFans> pageList = this.page(page, queryWrapper);
-        Map<String, Object> map = new HashMap<>();
-        map.put("list",pageList.getRecords());
-        map.put("count",pageList.getRecords().size());
-        return RespBean.success("成功",map);
+        Map<String, Object> returnMap = new HashMap<>();
+        List<AppletFansPO> list = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(pageList.getRecords())){
+            List<String> fansUuidStr = pageList.getRecords().stream().map(AppletFans :: getFansUuid).collect(Collectors.toList());
+            //查询粉丝List用户信息
+            QueryWrapper<AppletUser> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.in("uuid",fansUuidStr);
+            List<AppletUser> followList = appletUserServiceImpl.getBaseMapper().selectList(userQueryWrapper);
+            System.out.println("followLis="+followList);
+            list = pageList.getRecords().stream()
+                    .map(map -> followList.stream()
+                            .filter(x -> Objects.equals(x.getUuid(), map.getFansUuid()))
+                            .findFirst().map(x -> {
+                                AppletFansPO entity = new AppletFansPO();
+                                BeanUtils.copyProperties(x, entity);
+                                BeanUtils.copyProperties(map, entity);
+                                return entity;
+                            }).orElse(null))
+                    .filter(Objects::nonNull).collect(Collectors.toList());
+        }
+        returnMap.put("list",list);
+        returnMap.put("count",pageList.getRecords().size());
+        return RespBean.success("成功",returnMap);
     }
 }
 

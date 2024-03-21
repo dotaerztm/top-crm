@@ -36,6 +36,9 @@ public class AppletFollowServiceImpl extends ServiceImpl<AppletFollowMapper, App
     @Autowired
     AppletFansServiceImpl appletFansService;
 
+    @Autowired
+    AppletUserServiceImpl appletUserServiceImpl;
+
     
     @Override
     public RespBean follow(AppletFollowParam param) {
@@ -122,16 +125,21 @@ public class AppletFollowServiceImpl extends ServiceImpl<AppletFollowMapper, App
         IPage<AppletFollow> pageList = this.page(page, queryWrapper);
         Map<String, Object> returnMap = new HashMap<>();
         List<AppletFollowPO> list = new ArrayList<>();
-        //查询粉丝List用户信息
-        List<AppletUser> fansList = new ArrayList<>();
+
         if(!CollectionUtils.isEmpty(pageList.getRecords())){
+            List<String> followUuidStr = pageList.getRecords().stream().map(AppletFollow :: getFollowUuid).collect(Collectors.toList());
+            //查询粉丝List用户信息
+            QueryWrapper<AppletUser> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.in("uuid",followUuidStr);
+            List<AppletUser> followList = appletUserServiceImpl.getBaseMapper().selectList(userQueryWrapper);
+            System.out.println("followLis="+followList);
             list = pageList.getRecords().stream()
-                    .map(map -> fansList.stream()
-                            .filter(x -> Objects.equals(x.getId(), map.getFollowUuid()))
+                    .map(map -> followList.stream()
+                            .filter(x -> Objects.equals(x.getUuid(), map.getFollowUuid()))
                             .findFirst().map(x -> {
                                 AppletFollowPO entity = new AppletFollowPO();
-                                entity.setHeadImgUrl(x.getHeadImgUrl());
-                                entity.setNickName(x.getNickName());
+                                BeanUtils.copyProperties(x, entity);
+                                BeanUtils.copyProperties(map, entity);
                                 return entity;
                             }).orElse(null))
                     .filter(Objects::nonNull).collect(Collectors.toList());
