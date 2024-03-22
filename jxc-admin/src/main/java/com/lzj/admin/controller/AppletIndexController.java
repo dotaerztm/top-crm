@@ -177,16 +177,16 @@ public class AppletIndexController {
 
 
     /**
-     * 作品分页查询
+     * 首页-精选圈子
      * @param param
      * @return
      */
     @ResponseBody
-    @RequestMapping("selectWorksByPage")
-    public RespBean selectWorksByPage(@RequestBody AppletIndexParam param) {
-        log.info("调用接口【小程序---作品分页查询】");
+    @RequestMapping("selectBestWorksByPage")
+    public RespBean selectBestWorksByPage(@RequestBody AppletIndexParam param) {
+        log.info("调用接口【小程序---精品圈子查询】");
         try {
-            RespBean respBean = appletWorksService.selectWorksByPage(param);
+            RespBean respBean = appletWorksService.selectBestWorksByPage(param);
             return respBean;
         } catch (ParamsException e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ import com.lzj.admin.entity.*;
 import com.lzj.admin.enums.AppletUserEnum;
 import com.lzj.admin.mapper.AppletWorksMapper;
 import com.lzj.admin.model.RespBean;
+import com.lzj.admin.po.AppletFollowPO;
 import com.lzj.admin.po.AppletIndexParam;
 import com.lzj.admin.po.AppletWorksPO;
 import com.lzj.admin.po.AppletWorksParam;
@@ -19,10 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -44,20 +43,39 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
 
 
     @Override
-    public RespBean selectWorksByPage(AppletIndexParam param) {
+    public RespBean selectBestWorksByPage(AppletIndexParam param) {
         Page<AppletWorks> page = new Page<>(param.getPageIndex(), param.getPageSize());
         QueryWrapper<AppletWorks> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("works_type",param.getWorksType())
-                .eq("works_status",1)
-                .eq("is_del",0)
+        queryWrapper.eq("works_type",1)//官方推荐
+                .eq("works_status",1)//已审核
                 .orderByAsc("sort")
                 .orderByDesc("insert_time");
         IPage<AppletWorks> pageList = this.page(page, queryWrapper);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("list",pageList.getRecords());
-        map.put("count",pageList.getRecords().size());
-        return RespBean.success("成功",map);
+        Map<String, Object> returnMap = new HashMap<>();
+        List<AppletWorksPO> list = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(pageList.getRecords())){
+            List<String> uuidStr = pageList.getRecords().stream().map(AppletWorks :: getUuid).collect(Collectors.toList());
+            //查询粉丝List用户信息
+            QueryWrapper<AppletUser> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.in("uuid",uuidStr);
+            List<AppletUser> followList = appletUserServiceImpl.getBaseMapper().selectList(userQueryWrapper);
+            System.out.println("followLis="+followList);
+            list = pageList.getRecords().stream()
+                    .map(map -> followList.stream()
+                            .filter(x -> Objects.equals(x.getUuid(), map.getUuid()))
+                            .findFirst().map(x -> {
+                                AppletWorksPO entity = new AppletWorksPO();
+                                BeanUtils.copyProperties(x, entity);
+                                BeanUtils.copyProperties(map, entity);
+                                return entity;
+                            }).orElse(null))
+                    .filter(Objects::nonNull).collect(Collectors.toList());
+        }
+        returnMap.put("list",list);
+        returnMap.put("count",pageList.getRecords().size());
+        return RespBean.success("成功",returnMap);
     }
 
 

@@ -34,6 +34,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
                         "/css/**","/error/**","/images/**","/js/**","/lib/**",
                         "/image/*","/video/*","/text/*","/imageAndVideo/*",
                         "/campaign/*","/student/*",
-                        "/appletIndex/*","/appletCircle/*");
+                        "/appletIndex/*","/appletCircle/*","/appletMyself/*");
     }
 }

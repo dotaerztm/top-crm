@@ -17,7 +17,7 @@ import com.lzj.admin.po.AppletWorksParam;
  */
 public interface IAppletWorksService extends IService<AppletWorks> {
 
-    RespBean selectWorksByPage(AppletIndexParam param);
+    RespBean selectBestWorksByPage(AppletIndexParam param);
 
     void saveWorks(AppletWorksParam param);
 
