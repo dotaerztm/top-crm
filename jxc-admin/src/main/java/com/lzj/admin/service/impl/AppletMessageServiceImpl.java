@@ -15,6 +15,7 @@ import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.po.AppletMessageParam;
 import com.lzj.admin.service.IAppletMessageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lzj.admin.utils.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,4 +105,30 @@ public class AppletMessageServiceImpl extends ServiceImpl<AppletMessageMapper, A
         returnMap.put("count",pageList.getRecords().size());
         return RespBean.success("成功",returnMap);
     }
+
+    public void updateMessageIsRead(Integer id){
+        AppletMessage entity = this.baseMapper.selectById(id);
+        AssertUtil.isTrue(null == entity,"没有该消息!");
+        entity.setIsRead(1);
+        entity.setUpdateTime(new Date());
+        this.updateById(entity);
+    }
+
+    public RespBean selectAllMessageCount(String uuid) {
+
+        QueryWrapper<AppletMessage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uuid",uuid)
+                .eq("is_read",0);
+        List<AppletMessage> list = this.baseMapper.selectList(queryWrapper);
+        Map<Integer,Long> map = new HashMap<>();
+        if(!CollectionUtils.isEmpty(list)){
+            map = list.stream().
+                    collect(Collectors.groupingBy(AppletMessage::getMessageType,Collectors.counting()));
+        }
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("uuid",uuid);
+        returnMap.put("list",map);
+        return RespBean.success("成功",returnMap);
+    }
+
 }

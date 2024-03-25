@@ -3,6 +3,7 @@ package com.lzj.admin.controller;
 
 import com.lzj.admin.exceptions.ParamsException;
 import com.lzj.admin.model.RespBean;
+import com.lzj.admin.po.AppletBannerParam;
 import com.lzj.admin.po.AppletFollowParam;
 import com.lzj.admin.po.AppletMessageParam;
 import com.lzj.admin.po.AppletWorksParam;
@@ -75,7 +76,7 @@ public class AppletMySelfController {
     @ResponseBody
     @RequestMapping("selectMessageByPage")
     public RespBean selectMessageByPage(@RequestBody AppletMessageParam param) {
-        log.info("调用接口【小程序--关注列表 分页查询】");
+        log.info("调用接口【小程序--消息通知 分页查询】");
         try {
             if(null == param.getUuid()){
                 return RespBean.error("用户标示不能为空!");
@@ -91,6 +92,55 @@ public class AppletMySelfController {
         }catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("查询失败!");
+        }
+    }
+
+    /**
+     * 所有未读消息通知数 查询
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectAllMessageCount")
+    public RespBean selectAllMessageCount(@RequestBody AppletMessageParam param) {
+        log.info("调用接口【小程序--所有未读消息通知数】");
+        try {
+            if(null == param.getUuid()){
+                return RespBean.error("用户标示不能为空!");
+            }
+            RespBean respBean = appletMessageService.selectAllMessageCount(param.getUuid());
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
+    /**
+     * 消息置为已读
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("updateMessageIsRead")
+    public RespBean updateMessageIsRead(@RequestBody AppletMessageParam param) {
+        log.info("调用接口【小程序---消息置为已读】");
+        try {
+
+            if(null == param.getId()){
+                return RespBean.error("消息主键不能为空！");
+            }
+            appletMessageService.updateMessageIsRead(param.getId());
+            return RespBean.success("保存成功!");
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("保存失败!");
         }
     }
 

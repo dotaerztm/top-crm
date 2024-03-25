@@ -72,5 +72,8 @@ public class AppletUser implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "背景图片")
+    private String backgroundImage;
+
 
 }

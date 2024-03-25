@@ -19,4 +19,8 @@ public interface IAppletMessageService extends IService<AppletMessage> {
     void saveMessage(AppletMessageParam param);
 
     RespBean selectMessageByPage(AppletMessageParam param);
+
+    void updateMessageIsRead(Integer id);
+
+    RespBean selectAllMessageCount(String uuid);
 }
