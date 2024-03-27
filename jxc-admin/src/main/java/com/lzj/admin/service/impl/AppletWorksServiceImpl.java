@@ -37,6 +37,8 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
     @Autowired
     AppletWorksImageServiceImpl appletWorksImageServiceImpl;
 
+
+
     @Autowired
     AppletUserServiceImpl appletUserServiceImpl;
 
@@ -56,10 +58,10 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
         List<AppletWorksPO> list = new ArrayList<>();
 
         if(!CollectionUtils.isEmpty(pageList.getRecords())){
-            List<String> uuidStr = pageList.getRecords().stream().map(AppletWorks :: getUuid).collect(Collectors.toList());
+            List<String> uuids = pageList.getRecords().stream().map(AppletWorks :: getUuid).collect(Collectors.toList());
             //查询粉丝List用户信息
             QueryWrapper<AppletUser> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.in("uuid",uuidStr);
+            userQueryWrapper.in("uuid",uuids);
             List<AppletUser> followList = appletUserServiceImpl.getBaseMapper().selectList(userQueryWrapper);
             System.out.println("followLis="+followList);
             list = pageList.getRecords().stream()
@@ -72,6 +74,17 @@ public class AppletWorksServiceImpl extends ServiceImpl<AppletWorksMapper, Apple
                                 return entity;
                             }).orElse(null))
                     .filter(Objects::nonNull).collect(Collectors.toList());
+            //作品详情 加入集合中
+            List<Integer> worksIds = pageList.getRecords().stream().map(AppletWorks :: getId).collect(Collectors.toList());
+            QueryWrapper<AppletWorksImage> imageQueryWrapper = new QueryWrapper<>();
+            imageQueryWrapper.in("works_id",worksIds);
+            List<AppletWorksImage> imageDetailList = appletWorksImageServiceImpl.getBaseMapper().selectList(imageQueryWrapper);
+            Map<Integer, List<AppletWorksImage>> imageDetailMap = imageDetailList.stream().collect(Collectors.groupingBy(AppletWorksImage::getWorksId));
+            for (AppletWorksPO PO : list) {
+                if (imageDetailMap.containsKey(PO.getId())) {
+                    PO.setWorksImageList(imageDetailMap.get(PO.getId()));
+                }
+            }
         }
         returnMap.put("list",list);
         returnMap.put("count",pageList.getRecords().size());

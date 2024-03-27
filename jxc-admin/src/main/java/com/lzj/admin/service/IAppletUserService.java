@@ -29,4 +29,9 @@ public interface IAppletUserService extends IService<AppletUser> {
      */
     RespBean register(AppletUserParam param);
 
+
+    RespBean selectBaseInfoById(AppletUserParam param);
+
+    void updateBaseInfo(AppletUserParam param);
+
 }

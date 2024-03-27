@@ -42,8 +42,8 @@ public class AppletUser implements Serializable {
     @ApiModelProperty(value = "手机号")
     private String mobile;
 
-    @ApiModelProperty(value = "年龄")
-    private Integer age;
+    @ApiModelProperty(value = "生日")
+    private String birthday;
 
     @ApiModelProperty(value = "性别")
     private String sex;

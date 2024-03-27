@@ -15,6 +15,7 @@ import com.lzj.admin.service.IAppletUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lzj.admin.utils.AssertUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -147,7 +148,27 @@ public class AppletUserServiceImpl extends ServiceImpl<AppletUserMapper, AppletU
         return null;
     }
 
+    @Override
+    public RespBean selectBaseInfoById(AppletUserParam param) {
+        AppletUser entity = this.getOne(new QueryWrapper<AppletUser>()
+                .eq("uuid", param.getUuid()));
+        AssertUtil.isTrue(null == entity,"用户信息错误!");
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("data",entity);
+        return RespBean.success("成功", map);
+    }
+
+    @Override
+    public void updateBaseInfo(AppletUserParam param) {
+        AppletUser entity = this.getOne(new QueryWrapper<AppletUser>()
+                .eq("uuid", param.getUuid()));
+        AssertUtil.isTrue(null == entity,"用户信息错误!");
+        AppletUser addEntity = new AppletUser();
+        BeanUtils.copyProperties(param, addEntity);
+        addEntity.setId(entity.getId());
+        AssertUtil.isTrue(!this.updateById(addEntity),"编辑失败!");
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.lzj.admin.po;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,6 +23,18 @@ public class AppletUserParam extends Pagination implements Serializable {
     private String nickName;
 
     private String headImgUrl;
+
+    private String backgroundImage;
+
+    private String birthday;
+
+    private String sex;
+
+    private String nativePlace;
+
+    private String address;
+
+    private String wechat;
 
     private Date insertTime;
 

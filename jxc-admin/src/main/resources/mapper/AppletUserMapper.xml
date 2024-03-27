@@ -9,7 +9,7 @@
         <result column="nick_name" property="nickName" />
         <result column="head_img_url" property="headImgUrl" />
         <result column="mobile" property="mobile" />
-        <result column="age" property="age" />
+        <result column="birthday" property="birthday" />
         <result column="sex" property="sex" />
         <result column="native_place" property="nativePlace" />
         <result column="address" property="address" />
@@ -19,11 +19,13 @@
         <result column="user_type" property="userType" />
         <result column="insert_time" property="insertTime" />
         <result column="update_time" property="updateTime" />
+        <result column="background_image" property="backgroundImage" />
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uuid, nick_name, head_img_url, mobile, age, sex, native_place, address, company, job, wechat, user_type, insert_time, update_time
+        id, uuid, nick_name, head_img_url, mobile, birthday, sex, native_place, address, company, job, wechat, user_type, background_image,insert_time, update_time
     </sql>
 
 </mapper>

@@ -3,11 +3,9 @@ package com.lzj.admin.controller;
 
 import com.lzj.admin.exceptions.ParamsException;
 import com.lzj.admin.model.RespBean;
-import com.lzj.admin.po.AppletBannerParam;
-import com.lzj.admin.po.AppletFollowParam;
-import com.lzj.admin.po.AppletMessageParam;
-import com.lzj.admin.po.AppletWorksParam;
+import com.lzj.admin.po.*;
 import com.lzj.admin.service.IAppletMessageService;
+import com.lzj.admin.service.IAppletUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +34,60 @@ public class AppletMySelfController {
 
     @Resource
     private IAppletMessageService appletMessageService;
+
+    @Resource
+    private IAppletUserService appletUserService;
+
+    /**
+     * 查看 个人资料
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("selectBaseInfoById")
+    public RespBean selectBaseInfoById(@RequestBody AppletUserParam param) {
+        log.info("调用接口【小程序--单个作品 查询】");
+        try {
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标示不能为空!");
+            }
+            RespBean respBean = appletUserService.selectBaseInfoById(param);
+            return respBean;
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("查询失败!");
+        }
+    }
+
+
+
+    /**
+     * 我的 编辑个人资料
+     * @param param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("updateBaseInfo")
+    public RespBean updateBaseInfo(@RequestBody AppletUserParam param) {
+        log.info("调用接口【小程序---编辑个人资料】");
+        try {
+            if(StringUtils.isBlank(param.getUuid())){
+                return RespBean.error("用户标识不能为空!");
+            }
+            appletUserService.updateBaseInfo(param);
+            return RespBean.success("保存成功!");
+        } catch (ParamsException e) {
+            e.printStackTrace();
+            return RespBean.error(e.getMsg());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("编辑失败!");
+        }
+    }
+
 
     /**
      * 保存 通知消息
@@ -69,7 +121,7 @@ public class AppletMySelfController {
     }
 
     /**
-     * 消息通知 分页查询
+     * 消息通知 类别分页查询
      * @param param
      * @return
      */
@@ -78,7 +130,7 @@ public class AppletMySelfController {
     public RespBean selectMessageByPage(@RequestBody AppletMessageParam param) {
         log.info("调用接口【小程序--消息通知 分页查询】");
         try {
-            if(null == param.getUuid()){
+            if(StringUtils.isBlank(param.getUuid())){
                 return RespBean.error("用户标示不能为空!");
             }
             if(null == param.getMessageType()){
